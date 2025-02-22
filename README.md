@@ -1,91 +1,105 @@
-# AI/Machine Learning Intern Challenge: Simple Content-Based Recommendation
+# Movie Recommendation System
 
-**Deadline**: Sunday, Feb 23th 11:59 pm PST
+**Overview**
 
----
-
-## Overview
-
-Build a **content-based recommendation system** that, given a **short text description** of a user’s preferences, suggests **similar items** (e.g., movies) from a small dataset. This challenge should take about **3 hours**, so keep your solution **simple** yet **functional**.
-
-### Example Use Case
-
-- The user inputs:  
-  *"I love thrilling action movies set in space, with a comedic twist."*  
-- Your system processes this description (query) and compares it to a dataset of items (e.g., movies with their plot summaries or keywords).  
-- You then return the **top 3–5 “closest” matches** to the user.
+This project is a **content-based movie recommendation system** that suggests movies based on a user's textual input. It uses **TF-IDF vectorization** and **cosine similarity** to compare user preferences with movie metadata. The system combines multiple movie attributes to provide accurate recommendations.
 
 ---
 
-## Requirements
+## **Dataset**
 
-1. **Dataset**  
-   - Use a **small** public dataset of items (e.g., a list of movies with plot summaries, or other textual descriptions).  
-   - Make sure the dataset is easy to handle (maybe 100–500 rows) so the solution remains quick to implement and run.  
-   - Include the dataset in your forked repository *or* provide instructions/link on how to download it.  
-
-2. **Approach**  
-   - **Content-Based**: At a minimum, use text similarity to recommend items.  
-     - For instance, you can transform both the user’s text input and each item’s description into TF-IDF vectors and compute **cosine similarity**.  
-   - Return the **top N** similar items (e.g., top 5).
-
-3. **Code Organization**  
-   - You may use a **Jupyter Notebook** or **Python scripts**.  
-   - Keep it **readable** and **modular** (e.g., one section for loading data, one for building vectors, one for computing similarity, etc.).  
-   - Briefly comment or docstring your key functions/sections.
-
-4. **Output**  
-   - When given an input description (e.g., `"I like action movies set in space"`), your system should print or return a list of recommended items (e.g., 3–5 titles).  
-   - Include the similarity score or rank if you’d like.
-
-5. **Summary & Instructions**  
-   - A short `README.md` that includes:
-     - **Dataset**: Where it’s from, any steps to load it.  
-     - **Setup**: Python version, virtual environment instructions, and how to install dependencies (`pip install -r requirements.txt`).  
-     - **Running**: How to run your code (e.g., `python recommend.py "Some user description"` or open your notebook in Jupyter).  
-     - **Results**: A brief example of your system’s output for a sample query.
+- **Filename:** `tmdb-movies500.csv` (path hardcoded in the script)
+- **Columns Used:**
+  - `overview`: Movie plot summary.
+  - `cast`: Main cast members.
+  - `genres`: Genres associated with the movie.
+  - `keywords`: Relevant keywords.
+  - `tagline`: Movie tagline.
+  - `original_title`: Used for displaying the recommendation results.
+  - `release_date`: Displayed alongside recommendations.
 
 ---
 
-## Deliverables
+##  **Setup Instructions**
 
-1. **Fork the Public Repository**  
-   - **Fork** this repo into your own GitHub account.
+### 1️⃣ **Clone the Repository**
 
-2. **Implement Your Solution**  
-   - Load and preprocess your dataset (e.g., read CSV, handle text columns).  
-   - Convert text data to vectors (e.g., TF-IDF).  
-   - Implement a function to compute similarity between the user’s query and each item’s description.  
-   - Return the top matches.
-   - Salary expectation per month (Mandatory)
+```bash
+git clone https://github.com/Sarfarazzzzz/lumaa-spring-2025-ai-ml.git
+cd <repository_folder>
+```
 
-3. **Short Video Demo**  
-   - In a `.md` file (e.g., `demo.md`) within your fork, paste a link to a **brief screen recording** (video link).  
-   - Demonstrate:
-     - How you run the recommendation code.  
-     - A sample query and the results.
+### 2️⃣ **Create a Virtual Environment**
 
-4. **Deadline**  
-   - Submit your fork by **Sunday, Feb 23th 11:59 pm PST**.
+```bash
+python3 -m venv venv
+source venv/bin/activate  # Linux/MacOS
+venv\\Scripts\\activate  # Windows
+```
 
-> **Note**: This should be doable within ~3 hours. Keep it **straightforward**—you do **not** need advanced neural networks or complex pipelines. A simple TF-IDF + cosine similarity approach is sufficient.
+### 3️⃣ **Install Dependencies**
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## Evaluation Criteria
+##  **Running the Recommendation System**
 
-1. **Functionality**  
-   - Does your code run without errors?  
-   - When given an input query, does it successfully output relevant items?
+Run the script directly:
 
-2. **Code Quality**  
-   - Clear, commented code (where it counts).  
-   - Logical steps (load data → transform → recommend).
+```bash
+python3 CBR.py
+```
 
-3. **Clarity**  
-   - Is your `README.md` straightforward about setup, how to run, and what to expect?
+### **Example Interaction:**
 
-4. **ML/Recommendation Understanding**  
-   - Basic implementation of a content-based recommendation approach (vectorization, similarity measure).
+```
+What do you feel like watching today ?? I love thrilling action movies set in space, with a comedic twist
 
-**We look forward to seeing your solution!** Good luck!
+Top Recommendations:
+400 Days (10/29/15) - 20.20% Match
+Equals (9/4/15) - 18.26% Match
+The Lovers (2/13/15) - 15.36% Match
+Mad Max: Fury Road (5/13/15) - 15.09% Match
+Harbinger Down (8/7/15) - 14.61% Match
+```
+
+---
+
+##  **Code Structure**
+
+| Function Name           | Description                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `load_dataset()`        | Loads the dataset with Latin1 encoding.                                      |
+| `combine_features()`    | Combines overview, cast, genres, keywords, tagline into a single text field. |
+| `preprocess_text()`     | Cleans the text by lowercasing and removing punctuation.                     |
+| `preprocess_dataset()`  | Applies preprocessing to combined features.                                  |
+| `vectorize_text()`      | Transforms combined features using TF-IDF.                                   |
+| `recommend_items()`     | Computes cosine similarity and returns top matches.                          |
+| `main_recommendation()` | Handles the full recommendation pipeline.                                    |
+| `test()`                | Wrapper to run recommendations based on user input.                          |
+
+---
+
+## **Key Features & Functionality**
+
+- Uses **TF-IDF Vectorization** with bigram support (`ngram_range=(1, 2)`) for better context.
+- Cleans text thoroughly to improve similarity matching.
+- Displays **similarity scores** as a percentage for clarity.
+- Accepts **user input** directly via the command line for real-time recommendations.
+
+---
+
+
+##  **Video Demonstration**
+
+***[Add link to your video demonstration here]***
+
+---
+
+**Salary expectation per month:** 
+
+$3500 per month ($20-$25 per hour)
+
