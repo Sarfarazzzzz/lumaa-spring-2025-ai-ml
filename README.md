@@ -104,5 +104,5 @@ Harbinger Down (8/7/15) - 14.61% Match
 $3500 per month ($20-$25 per hour)
 
 ## **Contact**
-MailId : m.shaik@gwu.edu
+Email : m.shaik@gwu.edu
 
